@@ -1,0 +1,69 @@
+<!-- anime.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ anime.title }} - Anime Recommender</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/user">{{ username }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="card">
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <img
+              src="{{ anime.images.jpg.image_url }}"
+              alt="{{ anime.title }}"
+              class="anime-image"
+            />
+          </div>
+          <div class="col-md-8">
+            <h3>{{ anime.title }}</h3>
+            <p><strong>Sinopse:</strong> {{ anime.synopsis }}</p>
+            <p><strong>Episódios:</strong> {{ anime.episodes }}</p>
+            <p><strong>Tipo:</strong> {{ anime.type }}</p>
+            <p><strong>Status:</strong> {{ anime.status }}</p>
+            <a href="{{ anime.url }}" class="btn btn-primary" target="_blank">
+              Ver no My Anime List
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

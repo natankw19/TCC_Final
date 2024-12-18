@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anime Recommender</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body class="center-content">
+    <div class="card index-card">
+      <h1 class="display-4 mb-4">Bem-vindo!!!</h1>
+      <p class="lead mb-4">
+        Descubra animes incríveis com recomendações personalizadas baseadas em
+        suas escolhas!!!
+      </p>
+      <a href="/login" class="btn btn-primary btn-lg mb-2 w-100">Login</a>
+      <a href="/register" class="btn btn-secondary btn-lg w-100">Registrar</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

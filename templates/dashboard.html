@@ -1,0 +1,123 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Dashboard - Anime Recommender</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/user">{{ username }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">Bem vindo!!!</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <h5 class="card-title text-center mb-4">Pesquisar Animes</h5>
+            <form method="POST" action="/dashboard">
+              <div class="mb-3">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="search_type" id="categorySearch" value="category" checked>
+                  <label class="form-check-label" for="categorySearch">
+                    Buscar por categoria
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="search_type" id="nameSearch" value="name">
+                  <label class="form-check-label" for="nameSearch">
+                    Buscar por nome
+                  </label>
+                </div>
+              </div>
+              <div class="mb-4" id="categoryInput">
+                <input type="text" class="form-control" id="category" name="category" 
+                       placeholder="Digite uma categoria de anime..." required>
+              </div>
+              <div class="mb-4" id="nameInput" style="display: none;">
+                <input type="text" class="form-control" id="anime_name" name="anime_name" 
+                       placeholder="Digite o nome do anime">
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Pesquisar</button>
+            </form>
+          </div>
+          {% if animes %}
+          <div class="anime-container">
+            {% for anime in animes %}
+            <a
+              href="{{ url_for('anime', anime_id=anime['mal_id']) }}"
+              class="anime-card"
+            >
+              <img
+                src="{{ anime.images.jpg.image_url }}"
+                alt="{{ anime.title }}"
+              />
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const categoryInput = document.getElementById('categoryInput');
+        const nameInput = document.getElementById('nameInput');
+        const categoryRadio = document.getElementById('categorySearch');
+        const nameRadio = document.getElementById('nameSearch');
+        
+        function updateInputs() {
+          if (categoryRadio.checked) {
+            categoryInput.style.display = 'block';
+            nameInput.style.display = 'none';
+            document.getElementById('category').required = true;
+            document.getElementById('anime_name').required = false;
+          } else {
+            categoryInput.style.display = 'none';
+            nameInput.style.display = 'block';
+            document.getElementById('category').required = false;
+            document.getElementById('anime_name').required = true;
+          }
+        }
+
+        categoryRadio.addEventListener('change', updateInputs);
+        nameRadio.addEventListener('change', updateInputs);
+      });
+    </script>
+  </body>
+</html>

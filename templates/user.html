@@ -1,0 +1,292 @@
+<!-- user.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Histórico de Animes de {{ username }}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style>
+      /* Estilo para a barra lateral */
+      .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background-color:rgb(205, 232, 7);
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        z-index: 1050; /* Definir z-index mais alto */
+      }
+      .sidebar-content {
+        padding: 15px;
+      }
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 36px;
+        cursor: pointer;
+      }
+      .btn-danger {
+        position: relative;
+        z-index: 1000; /* Garantir que o botão tenha prioridade sobre elementos sobrepostos */
+      }
+
+      /* Estilo para garantir que a barra lateral se sobreponha ao restante da página */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+        display: none;
+      }
+
+      /* Estilos para a tabela de clustering */
+      .table-responsive {
+        margin-bottom: 2rem;
+      }
+    
+      .table {
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+    
+      .table thead th {
+        background-color: #343a40;
+        color: white;
+        border-color: #454d55;
+      }
+    
+      .table tbody tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      .clustering-table {
+        background-color: #e3f2fd; /* Azul claro */
+      }
+    </style>
+    <script>
+      // Função para abrir a barra lateral e overlay
+      function openSidebar() {
+        document.getElementById("mySidebar").style.width = "500px";
+        document.getElementById("overlay").style.display = "block";
+      }
+
+      // Função para fechar a barra lateral e overlay
+      function closeSidebar() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("overlay").style.display = "none";
+      }
+
+      // Função para abrir o modal
+      function openModal(imageSrc) {
+        const modalImage = document.getElementById("modalImage");
+        modalImage.src = imageSrc;
+        const myModal = new bootstrap.Modal(
+          document.getElementById("chartModal")
+        );
+        myModal.show();
+      }
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/user">{{ username }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Botão para abrir a barra lateral de análise -->
+    <button class="btn btn-info mt-4 ms-3" onclick="openSidebar()">
+      Análise
+    </button>
+
+    <!-- Conteúdo principal -->
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">Histórico de Animes de {{ username }}</h2>
+      <div class="row">
+        {% for anime in clicked_animes %}
+        <div class="col-md-4">
+          <div class="card text-center">
+            <img
+              src="{{ anime.anime_image_url }}"
+              alt="{{ anime.anime_title }}"
+              class="anime-image"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ anime.anime_title }}</h5>
+              <a href="/anime/{{ anime.anime_id }}" class="btn btn-primary mb-2"
+                >Ver Anime</a
+              >
+              <!-- Corrigir o identificador para excluir anime -->
+              <form action="/delete_anime/{{ anime.id }}" method="post">
+                <button type="submit" class="btn btn-danger">
+                  Excluir Anime
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <h2 class="text-center mt-5 mb-4">Recomendações de Animes</h2>
+      <div class="row">
+        {% for anime in recommended_animes %}
+        <div class="col-md-4">
+          <div class="card text-center">
+            <img
+              src="{{ anime.images.jpg.image_url }}"
+              alt="{{ anime.title }}"
+              class="anime-image"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ anime.title }}</h5>
+              <a href="{{ anime.url }}" class="btn btn-primary mb-2" target="_blank"
+                >Ver no My Anime List</a
+              >
+              <form action="/add_recommended_anime" method="post">
+                <input type="hidden" name="anime_id" value="{{ anime.mal_id }}">
+                <input type="hidden" name="anime_title" value="{{ anime.title }}">
+                <input type="hidden" name="anime_url" value="{{ anime.url }}">
+                <input type="hidden" name="anime_image" value="{{ anime.images.jpg.image_url }}">
+                <button type="submit" class="btn btn-success">Adicionar ao Histórico</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Add this after the recommended animes section -->
+      {% if clustering_results %}
+      <div class="container mt-4">
+          <div style="max-width: 800px; margin: 0 auto;">
+              <h3 class="text-center mb-3">Análise de Animes Ranqueados</h3>
+              <div class="table-responsive">
+                  <table class="table table-striped clustering-table">
+                      <thead>
+                          <tr>
+                              <th>Título</th>
+                              <th>Gêneros</th>
+                              <th>Episódios</th>
+                              <th>Nota</th>
+                              <th>Grupo</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for anime in clustering_results %}
+                          <tr>
+                              <td>{{ anime.title }}</td>
+                              <td>{{ anime.genres }}</td>
+                              <td>{{ anime.episodes }}</td>
+                              <td>{{ "%.2f"|format(anime.score) }}</td>
+                              <td>{{ anime.rank_score }}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+      {% endif %}
+
+    <div id="mySidebar" class="sidebar">
+      <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">
+        &times;
+      </a>
+      <div class="sidebar-content">
+        <h4>Análise de Animes</h4>
+        <div class="card mt-4 p-4">
+          <h5>Quantidade de Episódios por Anime</h5>
+          <img
+            src="{{ url_for('static', filename='episodes_chart.png') }}"
+            alt="Gráfico de Episódios por Anime"
+            class="img-fluid"
+            onclick="openModal('{{ url_for('static', filename='episodes_chart.png') }}')"
+            style="cursor: pointer"
+          />
+        </div>
+        <div class="card mt-4 p-4">
+          <h5>Nota dos Animes</h5>
+          <img
+            src="{{ url_for('static', filename='scores_chart.png') }}"
+            alt="Gráfico de Notas dos Animes"
+            class="img-fluid"
+            onclick="openModal('{{ url_for('static', filename='scores_chart.png') }}')"
+            style="cursor: pointer"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay para escurecer o fundo quando a barra lateral está aberta -->
+    <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Modal para exibir os gráficos expandidos -->
+    <div
+      class="modal fade"
+      id="chartModal"
+      tabindex="-1"
+      aria-labelledby="chartModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="chartModalLabel">Gráfico Expandido</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <img
+              id="modalImage"
+              src=""
+              alt="Gráfico Expandido"
+              class="img-fluid"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

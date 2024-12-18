@@ -1,0 +1,187 @@
+/* Estilo comum a todas as páginas */
+body {
+  background: linear-gradient(135deg, #17a055, #378aab);
+  min-height: 100vh;
+}
+
+/* Estilo de alinhamento central para páginas de login, registro e index */
+.center-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  /* Certifica-se de que o conteúdo esteja centralizado verticalmente */
+}
+
+/* Estilo dos cards */
+.card {
+  box-shadow: 0 4px 8px rgba(225, 57, 57, 0.1);
+  border-radius: 15px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  margin: auto;
+  /* Centraliza os cards horizontalmente */
+}
+
+.card-large {
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+/* Estilo das imagens de anime */
+.anime-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.anime-image-large {
+  width: 300px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Estilo dos botões */
+.btn-primary {
+  background-color: #6c63ff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #5146d9;
+}
+
+.btn-secondary {
+  background-color: #4d4d4d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #3c3c3c;
+}
+
+.btn-danger {
+  margin-top: 0.5rem;
+  position: relative;
+  z-index: 1001;
+  /* Garantir que o botão tenha prioridade sobre elementos sobrepostos */
+}
+
+/* Estilo dos cards de animes */
+.anime-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  justify-content: center;
+  /* Centraliza o grid */
+}
+
+/* Estilo dos cards de anime */
+.anime-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin: auto;
+  /* Centraliza o card */
+}
+
+.anime-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.anime-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+/* Estilo da navbar */
+.navbar-nav .nav-item {
+  margin-right: 1rem;
+}
+
+/* Estilo específico para a página index */
+.index-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  max-width: 400px;
+  margin: auto;
+  /* Centraliza o card na página */
+}
+
+.index-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.index-subtext {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.index-buttons .btn {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+}
+
+/* Estilo para a barra lateral */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #f3f3f3;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  z-index: 1000;
+}
+
+.sidebar-content {
+  padding: 15px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 36px;
+  cursor: pointer;
+}
+
+/* Estilos para a tabela de clustering */
+.clustering-table {
+  background-color: #e6f3ff;  /* Azul claro */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.clustering-table thead th {
+  background-color: #0d6efd;  /* Azul Bootstrap */
+  color: white;
+  border-color: #0d6efd;
+}
+
+.clustering-table tbody tr:hover {
+  background-color: #d4e9ff;  /* Azul mais claro para hover */
+}
+
+.clustering-table td, .clustering-table th {
+  padding: 12px;
+}
